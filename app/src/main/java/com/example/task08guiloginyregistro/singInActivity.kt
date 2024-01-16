@@ -1,14 +1,17 @@
 package com.example.task08guiloginyregistro
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+
 
 class singInActivity : AppCompatActivity() {
 
@@ -20,16 +23,17 @@ class singInActivity : AppCompatActivity() {
     private lateinit var btnLoginGoogle : Button
     private lateinit var btnLoginFacebook : Button
     private lateinit var btnSingIn : Button
+    private lateinit var auth: FirebaseAuth
 
 
     //VARIABLE SISTEMA LOG
-    private val TAG = "LoginActivity"
+    private val TAG = "singInActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         Log.d(TAG, "onCreate: La actividad está siendo creada")
         //CREACION DE LA VISTA
-        lateinit var auth: FirebaseAuth
+
         auth = Firebase.auth
 
         super.onCreate(savedInstanceState)
@@ -51,7 +55,11 @@ class singInActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "Autenticacion del ususario Correcta")
-                                val user = auth.currentUser
+                                //val user = auth.currentUser
+                                val intent = Intent(this@singInActivity, saludosActivity::class.java)
+                                intent.putExtra("email", email.text.toString())
+                                startActivity(intent)
+
 
                             } else {
                                 val builder = AlertDialog.Builder(this)
@@ -63,7 +71,7 @@ class singInActivity : AppCompatActivity() {
                             }
                     }
 
-                }else{ }
+                }else{ Log.d(TAG, "Debes rellenar los campos") }
 
              }
         } catch (e: Exception) {
@@ -74,31 +82,13 @@ class singInActivity : AppCompatActivity() {
 
 
         try {
-            btnSingIn.setOnClickListener{
 
-                if (email.text.isNotEmpty() && Password.text.isNotEmpty()){
+                btnSingIn.setOnClickListener(View.OnClickListener {
+                    val intent = Intent(this@singInActivity, loginActivity::class.java)
+                    startActivity(intent)
+                })
 
-                    auth.createUserWithEmailAndPassword(email.text.toString(), Password.text.toString()).addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "Usuario Creado Correctamente")
-                            val user = auth.currentUser
-                            //updateUI(user)
-                        } else {
-                            Log.d(TAG, "Usuario No Creado Correctamente")
-                            
-                            // If sign in fails, display a message to the user.
-                            //Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                            //Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT,).show()
-                            //updateUI(null)
 
-                        }
-                    }
-                } else{
-                    Log.d(TAG, "Error en la creacion del Usuario")
-                }
-
-            }
 
         } catch (e: Exception) {
             Log.d(TAG, "Usuario No Creado Correctamente")
