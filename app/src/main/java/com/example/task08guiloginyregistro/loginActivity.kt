@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
@@ -16,15 +17,15 @@ import com.google.firebase.auth.ktx.auth
 
 class loginActivity : AppCompatActivity() {
 
-     private lateinit var email : EditText
-     private lateinit var Password : EditText
-     private lateinit var radioButtonH : RadioButton
-     private lateinit var radioButtonM : RadioButton
-     private lateinit var spinner : Spinner
-     private lateinit var btnSingIn: Button
-     private lateinit var auth: FirebaseAuth
-     //VARIABLE SISTEMA LOG
-     private val TAG = "LoginActivity"
+    private lateinit var email : EditText
+    private lateinit var Password : EditText
+    private lateinit var radioButtonH : RadioButton
+    private lateinit var radioButtonM : RadioButton
+    private lateinit var spinner : Spinner
+    private lateinit var btnSingIn: Button
+    private lateinit var auth: FirebaseAuth
+    //VARIABLE SISTEMA LOG
+    private val TAG = "LoginActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +36,12 @@ class loginActivity : AppCompatActivity() {
         btnSingIn = findViewById(R.id.btnSingIn)
         auth= Firebase.auth
 
+        val btnatras: ImageButton = findViewById(R.id.imageButton)
 
+        btnatras.setOnClickListener{
+            var intent = Intent(this@loginActivity, singInActivity::class.java)
+            startActivity(intent)
+        }
 
         try {
             btnSingIn.setOnClickListener{

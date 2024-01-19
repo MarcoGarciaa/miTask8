@@ -19,12 +19,8 @@ class singInActivity : AppCompatActivity() {
     private lateinit var email : EditText
     private lateinit var Password : EditText
     private lateinit var btnLogin : Button
-    private lateinit var btnForgotPassword : Button
-    private lateinit var btnLoginGoogle : Button
-    private lateinit var btnLoginFacebook : Button
     private lateinit var btnSingIn : Button
     private lateinit var auth: FirebaseAuth
-
 
     //VARIABLE SISTEMA LOG
     private val TAG = "singInActivity"
@@ -47,58 +43,39 @@ class singInActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         btnSingIn = findViewById(R.id.btnSingIn)
 
-
         try {
             btnLogin.setOnClickListener{
                 if (email.text.isNotEmpty() && Password.text.isNotEmpty()){
-                    auth.createUserWithEmailAndPassword(email.text.toString(), Password.text.toString()).addOnCompleteListener(this) { task ->
-                            if (task.isSuccessful) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "Autenticacion del ususario Correcta")
-                                //val user = auth.currentUser
-                                val intent = Intent(this@singInActivity, saludosActivity::class.java)
-                                intent.putExtra("email", email.text.toString())
-                                startActivity(intent)
+                    auth.signInWithEmailAndPassword(email.text.toString(), Password.text.toString()).addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Autenticacion del ususario Correcta")
+                            val intent = Intent(this@singInActivity, saludosActivity::class.java)
+                            intent.putExtra("email", email.text.toString())
+                            startActivity(intent)
 
-
-                            } else {
-                                val builder = AlertDialog.Builder(this)
-                                builder.setTitle("Error")
-                                builder.setMessage("Se ha producido un error en la autenticacion del ususario")
-                                builder.setPositiveButton("Aceptar",null)
-                                val dialog: AlertDialog = builder.create()
-                                dialog.show()
-                            }
+                        } else {
+                            val builder = AlertDialog.Builder(this)
+                            builder.setTitle("Error")
+                            builder.setMessage("Se ha producido un error en la autenticacion del ususario")
+                            builder.setPositiveButton("Aceptar",null)
+                            val dialog: AlertDialog = builder.create()
+                            dialog.show()
+                        }
                     }
-
                 }else{ Log.d(TAG, "Debes rellenar los campos") }
-
-             }
+            }
         } catch (e: Exception) {
             Log.d(TAG, "Error en la autentificacion del usuario")
         }
-
-
-
-
         try {
-
-                btnSingIn.setOnClickListener(View.OnClickListener {
-                    val intent = Intent(this@singInActivity, loginActivity::class.java)
-                    startActivity(intent)
-                })
-
-
-
+            btnSingIn.setOnClickListener(View.OnClickListener {
+                val intent = Intent(this@singInActivity, loginActivity::class.java)
+                startActivity(intent)
+            })
         } catch (e: Exception) {
             Log.d(TAG, "Usuario No Creado Correctamente")
         }
-
-
-
     }
-
-
 }
 
 
